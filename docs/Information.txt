@@ -1,0 +1,13 @@
+Database Name : - hotel.sql
+user name : - Admin
+password  : - 1234
+
+Codigo compartido por tusolutionweb
+para fines de estudio
+quedra totalemente prohibido publicar este codigo en otras paginas 
+VISITANOS en
+web:http://tusolutionweb.blogspot.pe/
+Desarrollamos sistemas contactenos tambien a
+https://www.facebook.com/tusolutionweb/
+Siguenos en twiter
+https://twitter.com/tusolutionweb
