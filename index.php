@@ -478,7 +478,7 @@ include('db.php');
 						</div>
 						<div class="price-selet">	
 							<h3><span>$</span>320</h3>						
-							<a href="admin/reservation.php" >Reservar ahora</a>
+							<a href="admin/reservation.php?room=Superior Room">Reservar ahora</a>
 						</div>
 					</div>
 				</div>
@@ -501,7 +501,7 @@ include('db.php');
 						</div>
 						<div class="price-selet">
 							<h3><span>$</span>220</h3>
-							<a href="admin/reservation.php" >Reservar ahora</a>
+							<a href="admin/reservation.php?room=Deluxe Room" >Reservar ahora</a>
 						</div>
 					</div>
 				</div>
@@ -524,7 +524,7 @@ include('db.php');
 						</div>
 						<div class="price-selet">
 							<h3><span>$</span>180</h3>
-							<a href="admin/reservation.php" >Reservar ahora</a>
+							<a href="admin/reservation.php?room=Guest House" >Reservar ahora</a>
 						</div>
 					</div>
 				</div>
@@ -547,7 +547,7 @@ include('db.php');
 						</div>
 						<div class="price-selet">
 							<h3><span>$</span> 150</h3>
-							<a href="admin/reservation.php" >Reservar ahora</a>
+							<a href="admin/reservation.php?room=Single Room" >Reservar ahora</a>
 						</div>
 					</div>
 				</div>

@@ -1,5 +1,10 @@
 <?php
-include('db.php')
+include('db.php');
+if(!isset($_GET['room'])){
+ $room = "";	
+} else {
+ $room = $_GET['room'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,8 +86,9 @@ include('db.php')
 								?>
 								<div class="form-group">
 									<label>Passport Country*</label>
-									<select name="country" class="form-control" required>
+									<select name="country" class="form-control" id="colnal" required>					
 										<option value="Colombia" selected >Colombia</option>
+										<option value="0" >Seleccione</option>
 										<?php
 										foreach($countries as $key => $value):
 										echo '<option value="'.$value.'">'.$value.'</option>'; //close your tags!!
@@ -113,6 +119,14 @@ include('db.php')
 										<option value="Guest House">CASA DE HUESPEDES</option>
 										<option value="Single Room">HABITACIÓN INDIVIDUAL
 										</option>
+										<?php if($room == 'Superior Room'): ?>
+										<option value="Superior Room" selected>  HABITACIÓN SUPERIOR</option> <?php endif ?>
+										<?php if($room == 'Deluxe Room'): ?>
+										<option value="Deluxe Room" selected>  HABITACIÓN DE LUJO</option> <?php endif ?>
+										<?php if($room == 'Guest House'): ?>
+										<option value="Guest House" selected> CASA DE HUESPEDES</option> <?php endif ?>
+										<?php if($room == 'Single Room'): ?>
+										<option value="Single Room" selected>  HABITACIÓN INDIVIDUAL</option> <?php endif ?>
 									</select>
 								  </div>
 								<div class="form-group">

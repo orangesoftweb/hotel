@@ -197,8 +197,8 @@ $(function() {
         mainApp.initFunction();
     });
 
-	//OrangeSoft//
-	
+	//OrangeSoft-Script//
+	//Resumen
 	var habitacion = document.querySelector('#room');
 	var cama = document.querySelector('#bed');
 	var comida = document.querySelector('#meal');
@@ -211,8 +211,7 @@ $(function() {
 	btnReservar.disabled = true;
 	
 	$('#calculate').on('click', calcularServicios);
-		
-	
+			
 	function calcularServicios(e) {
 		e.preventDefault();
 		var room = habitacion.value;
@@ -288,6 +287,22 @@ $(function() {
 		btnReservar.disabled = false;
 		btnCalcular.disabled = true;
 	}
+	
+	//Nacionalidad
+	$('#colnal').children('option[value="0"]').hide();
+	$('#colnal').children('option[value="Colombia"]').hide();
+	$('.radio-inline').on('click', function(){
+		var check = $('input[name=nation]:checked').val();
+		console.log(check);
+		if(check == 'Extranjero') {
+			$('#colnal').val("0");
+		}
+		if(check == 'Nacional') {
+			$('#colnal').val("Colombia");
+		}
+	
+	});
+
 	
 /*}(jQuery));*/
 });
