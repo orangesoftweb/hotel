@@ -479,7 +479,7 @@ session_start();
 			}
 		}
 		if($st=="denied") {
-			//$to = 'orangewebsof@gmail.com';
+			//$to = 'orangewebsoft@gmail.com';
 			$subject = 'Confirmación de Reserva';
 			$message =  "$title $fname $lname su reservación ha sido rechazada";
 			$send = mail($email, $subject, $message);

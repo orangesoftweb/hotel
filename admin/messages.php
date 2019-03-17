@@ -144,7 +144,7 @@ if(!isset($_SESSION["user"]))
 										</div>
 										 </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerca</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                            <input type="submit" name="log" value="Send" class="btn btn-primary">
 										  </form>
 										   
@@ -203,7 +203,7 @@ if(!isset($_SESSION["user"]))
 											{
 												echo"<tr class='gradeC'>
 													<td>".$row['fullname']."</td>
-													<td>".$row['phoneno']."</td>
+													<td>".$row['phone']."</td>
 													<td>".$row['email']."</td>
 													<td>".$row['cdate']."</td>
 													<td>".$row['approval']."</td>
@@ -215,7 +215,7 @@ if(!isset($_SESSION["user"]))
 											{
 												echo"<tr class='gradeU'>
 													<td>".$row['fullname']."</td>
-													<td>".$row['phoneno']."</td>
+													<td>".$row['phone']."</td>
 													<td>".$row['email']."</td>
 													<td>".$row['cdate']."</td>
 													<td>".$row['approval']."</td>

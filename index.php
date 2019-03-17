@@ -2,7 +2,7 @@
 include('db.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <title>SUNRISE HOTEL</title>
 <!-- for-mobile-apps -->
@@ -667,7 +667,7 @@ include('db.php');
 			<div class="contact-agileits">
 				<h4>Contáctenos</h4>
 				<p class="contact-agile2">Inscribíte a nuestros boletines</p>
-				<form  method="post" name="sentMessage" id="contactForm" >
+				<form  method="post" name="sentMessage" id="contactForm" action="admin/mailchimp.php" >
 					<div class="control-group form-group">                       
 						<label class="contact-p1">Nombre completo:</label>
 						<input type="text" class="form-control" name="name" id="name" required >
@@ -692,7 +692,7 @@ include('db.php');
 					$phone = $_POST['phone'];
 					$email = $_POST['email'];
 					$approval = "Not Allowed";
-					$sql = "INSERT INTO `contact`(`fullname`, `phoneno`, `email`,`cdate`,`approval`) VALUES ('$name','$phone','$email',now(),'$approval')" ;					
+					$sql = "INSERT INTO `contact`(`fullname`, `phone`, `email`,`cdate`,`approval`) VALUES ('$name','$phone','$email',now(),'$approval')" ;					
 					
 					if(mysqli_query($con,$sql))
 					echo"OK";					
@@ -712,7 +712,7 @@ include('db.php');
 					<li><a href="#" class="fa fa-google-plus icon-border googleplus"> </a></li> 							
 				</ul>
 			</div>
-			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3074.7905052320443!2d-77.84987248482734!3d39.586871613613056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c9f6a80ccf0661%3A0x7210426c67abc40!2sVirginia+Welcome+Center%2FSafety+Rest+Area!5e0!3m2!1sen!2sin!4v1485760915662" ></iframe>
+			<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d1986.7008844872362!2d-74.75420062869487!3d5.199374026585545!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sco!4v1552583846064" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 		</div>
 		<div class="clearfix"></div>
 	</div>
