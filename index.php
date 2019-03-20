@@ -1,5 +1,9 @@
 <?php
 include('db.php');
+//Mailchimp
+use \DrewM\MailChimp\MailChimp;
+require 'vendor/autoload.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -667,7 +671,7 @@ include('db.php');
 			<div class="contact-agileits">
 				<h4>Contáctenos</h4>
 				<p class="contact-agile2">Inscribíte a nuestros boletines</p>
-				<form  method="post" name="sentMessage" id="contactForm" action="admin/mailchimp.php" >
+				<form  method="post" name="sentMessage" id="contactForm" action="#" >
 					<div class="control-group form-group">                       
 						<label class="contact-p1">Nombre completo:</label>
 						<input type="text" class="form-control" name="name" id="name" required >
@@ -691,11 +695,30 @@ include('db.php');
 					$name =$_POST['name'];
 					$phone = $_POST['phone'];
 					$email = $_POST['email'];
-					$approval = "Not Allowed";
-					$sql = "INSERT INTO `contact`(`fullname`, `phone`, `email`,`cdate`,`approval`) VALUES ('$name','$phone','$email',now(),'$approval')" ;					
-					
+					$approval = "subscribed";//Not Allowed
+					$sql = "INSERT INTO `contact`(`fullname`, `phone`, `email`,`cdate`,`approval`) VALUES ('$name','$phone','$email',now(),'$approval')" ;									
 					if(mysqli_query($con,$sql))
-					echo"OK";					
+					echo"OK";
+					//MailChimp
+					$MailChimp = new MailChimp('117e9faefbd5bb32ed8c39a352361087-us20');
+					$list_id = '6589d61c1c';
+					
+					$result = $MailChimp->post("lists/$list_id/members", [
+						'email_address' => $email,
+						'status'        => $approval,
+						'merge_fields' 	=> [
+							'FNAME'		=> $name,
+							'PHONE'		=> $phone
+						]
+					]);
+
+					if ($MailChimp->success()) {
+						print_r($result);
+						echo "<script type='text/javascript'> alert('Subscripción realizada exitosamente!')</script>";
+					} else {
+						echo $MailChimp->getLastError();
+						echo "<script type='text/javascript'> alert('Subscripción no realizada exitosamente!')</script>";
+					}
 				}
 				?>
 			</div>

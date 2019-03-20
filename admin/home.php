@@ -25,7 +25,7 @@ if(!isset($_SESSION["user"]))
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
+        	<div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                     <span class="sr-only">Navegación de palanca</span>
                     <span class="icon-bar"></span>
@@ -90,25 +90,25 @@ if(!isset($_SESSION["user"]))
                 </div>
                 <!-- /. ROW  -->
 				<?php
-						include ('db.php');
-						$sql = "select * from roombook";
-						$re = mysqli_query($con,$sql);
-						$c =0;
-						while($row=mysqli_fetch_array($re) )
-						{
-								$new = $row['stat'];
-								$cin = $row['cin'];
-								$id = $row['id'];
-								if($new=="Not Conform")
-								{
-									$c = $c + 1;						
-								}						
-						}
+				include ('db.php');
+				$sql = "select * from roombook";
+				$re = mysqli_query($con,$sql);
+				$c =0;
+				while($row=mysqli_fetch_array($re) )
+				{
+					$new = $row['stat'];
+					$cin = $row['cin'];
+					$id = $row['id'];
+					if($new=="Not Conform")
+					{
+						$c = $c + 1;						
+					}						
+				}
 				?>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-default">
-							<div class="panel-heading"></div>						
+							<div class="panel-heading"></div>		
 							<div class="panel-body">
 								<div class="panel-group" id="accordion">
 									<div class="panel panel-primary">
@@ -123,7 +123,7 @@ if(!isset($_SESSION["user"]))
 										</div>
 										<div id="collapseTwo" class="panel-collapse in" style="height: auto;">
 											<div class="panel-body">
-												<div class="panel panel-default">             
+												<div class="panel panel-default">   
 													<div class="panel-body">
 														<div class="table-responsive">
 															<table class="table">
@@ -183,11 +183,11 @@ if(!isset($_SESSION["user"]))
 									$r =0;
 									while($row=mysqli_fetch_array($rre) )
 									{		
-											$br = $row['stat'];
-											if($br=="Conform")
-											{
-												$r = $r + 1;
-											}
+										$br = $row['stat'];
+										if($br=="Conform")
+										{
+											$r = $r + 1;
+										}
 									}
 									?>
 									<div class="panel panel-info">
@@ -195,7 +195,7 @@ if(!isset($_SESSION["user"]))
 											<h4 class="panel-title">
 												<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">
 												<button class="btn btn-primary" type="button">Cuartos reservados <span class="badge"><?php echo $r ; ?></span>
-												</button>								
+												</button>							
 												</a>
 											</h4>
 										</div>
@@ -211,7 +211,7 @@ if(!isset($_SESSION["user"]))
 												if($br=="Conform")
 												{
 													$fid = $mrow['id'];				 
-												echo"<div class='col-md-3 col-sm-12 col-xs-	12'>
+													echo"<div class='col-md-3 col-sm-12 col-xs-	12'>
 													<div class='panel panel-primary text-center no-boder bg-color-blue'>
 														<div class='panel-body'>
 															<i class='fa fa-users fa-5x'></i>
@@ -268,13 +268,13 @@ if(!isset($_SESSION["user"]))
 															$cre = mysqli_query($con,$csql);
 															while($crow=mysqli_fetch_array($cre) )
 															{	
-																	echo"<tr>
-																		<th>".$crow['id']."</th>
-																		<th>".$crow['fullname']."</th>
-																		<th>".$crow['email']." </th>
-																		<th>".$crow['cdate']." </th>
-																		<th>".$crow['approval']."</th>
-																		</tr>";
+																echo"<tr>
+																	<th>".$crow['id']."</th>
+																	<th>".$crow['fullname']."</th>
+																	<th>".$crow['email']." </th>
+																	<th>".$crow['cdate']." </th>
+																	<th>".$crow['approval']."</th>
+																	</tr>";
 															}
 															?>
 															</tbody>

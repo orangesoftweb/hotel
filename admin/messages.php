@@ -104,7 +104,7 @@ if(!isset($_SESSION["user"]))
 						while($rows = mysqli_fetch_array($rew))
 						{
 								$app=$rows['approval'];
-								if($app=="Allowed")
+								if($app=="Subscribed")//Allowed
 								{
 									
 								}
@@ -188,7 +188,7 @@ if(!isset($_SESSION["user"]))
                                             <th>Fecha</th>
 											<th>Estado</th>
 											<th>Aprobación</th>
-											<th>retirar</th>                           
+											<th>Eliminar</th>                           
                                         </tr>
                                     </thead>
                                     <tbody>
