@@ -1,5 +1,4 @@
 <?php
-
 include ('db.php');
 use \DrewM\MailChimp\MailChimp;
 require '../vendor/autoload.php';

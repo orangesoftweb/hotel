@@ -82,7 +82,7 @@ if(!isset($_SESSION["user"]))
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-			 <div class="row">
+			 	<div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
 							Boletines informativos<small> panel</small>
@@ -97,154 +97,243 @@ if(!isset($_SESSION["user"]))
 				
 			   ?>
 				<div class="row">
-                <div class="col-md-12">
-                    <div class="jumbotron">
-                        <h3>Enviar las cartas de noticias a los seguidores</h3>
-						<?php
-						while($rows = mysqli_fetch_array($rew))
-						{
+					<div class="col-md-12">
+						<div class="jumbotron">
+							<h3>Send to newsletter to subscribed</h3>
+							<?php
+							while($rows = mysqli_fetch_array($rew))
+							{
 								$app=$rows['approval'];
 								if($app=="Subscribed")//Allowed
 								{
-									
-								}
-						}
-						?>
-                        <p></p>
-                        <p>
-						<div class="panel-body">
-                            <button class="btn btn-primary btn" data-toggle="modal" data-target="#myModal">
-                              Enviar nuevas cartas de noticias
 
-                            </button>
-                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="myModalLabel">Redactar Boletín</h4>
-                                        </div>
-										<form method="post">
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                            <label>Título</label>
-                                            <input name="title" class="form-control" placeholder="Enter Title">
+								}
+							}
+							?>
+							<p></p>
+                        	<p>
+								<div class="panel-body">
+									<button class="btn btn-primary btn" data-toggle="modal" data-target="#myModal">
+									  Crear campañas publicitarias
+									</button>
+									<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+													<h4 class="modal-title" id="myModalLabel">Redactar Boletín</h4>
+												</div>
+												<form method="post">
+													<div class="modal-body">
+														<div class="form-group">
+														<label>Título</label>
+														<input name="title" class="form-control" placeholder="Enter Title">
+														</div>
+													</div>
+													<div class="modal-body">
+														<div class="form-group">
+														<label>Tema</label>
+														<input name="subject" class="form-control" placeholder="Enter Subject">
+														</div>
+													</div>
+													<div class="modal-body">
+														<div class="form-group">
+														  <label for="comment">Noticias</label>
+														  <textarea name="news" class="form-control" rows="5" id="comment"></textarea>
+														</div>
+													 </div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+													   <input type="submit" name="log" value="Send" class="btn btn-primary">
+													</div>
+												</form>
 											</div>
 										</div>
-										<div class="modal-body">
-                                            <div class="form-group">
-                                            <label>Tema</label>
-                                            <input name="subject" class="form-control" placeholder="Enter Subject">
-											</div>
-                                        </div>
-										<div class="modal-body">
-										<div class="form-group">
-										  <label for="comment">Noticias</label>
-										  <textarea name="news" class="form-control" rows="5" id="comment"></textarea>
-										</div>
-										 </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                           <input type="submit" name="log" value="Send" class="btn btn-primary">
-										  </form>
-										   
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-							<?php
-							if(isset($_POST['log']))
-							{	
-								$log ="INSERT INTO `newsletterlog`(`title`, `subject`, `news`) VALUES ('$_POST[title]','$_POST[subject]','$_POST[news]')";
-								if(mysqli_query($con,$log))
-								{
-									echo '<script>alert("New Room Added") </script>' ;
-											
+									</div>
+								</div>
+								<?php
+								//Mailchimp
+								use \DrewM\MailChimp\MailChimp;
+								require '../vendor/autoload.php';
+								$MailChimp = new MailChimp('117e9faefbd5bb32ed8c39a352361087-us20');
+								$list_id = '6589d61c1c';
+							
+								if(isset($_POST['log']))
+								{												
+									//Maichimp
+									$template_id = 24829;
+									$reply_to = 'orangesoft@programmer.net';
+									$from_name = 'OrangeSoftWeb';
+									$newsletter_subject_line = $_POST['subject'];
+									$title = $_POST['title'];
+									$news = $_POST['news'];
+									// Create or Post new Campaign
+									$result = $MailChimp->post("campaigns", [
+										'type' => 'regular',
+										'recipients' => ['list_id' => $list_id],
+										'settings' => ['subject_line' => $newsletter_subject_line,
+											   'reply_to' => $reply_to,
+											   'from_name' => $from_name
+											  ]
+										]);
+									$response = $MailChimp->getLastResponse();
+									$responseObj = json_decode($response['body']);
+									//$campaign = $MailChimp->get('campaigns' . $responseObj->id );*/
+									//IdCampaign
+									$result = $MailChimp->get('campaigns');
+									$campaign = $result['campaigns'][0]['id'];
+									// Manage Campaign Content
+									$html = "<div mc:edit='body_content'>
+												<h1>$title</h1>
+												<p>$news<p>
+											</div>";
+									//$html = file_get_contents('editable.php');
+									$result = $MailChimp->put('campaigns/' . $responseObj->id . '/content', [
+										  'template' => ['id' => $template_id, 
+											'sections' => ['body_content' => $html]
+											]
+										  ]);
+									
+									$log ="INSERT INTO `newsletterlog`(`mailchimp`,`title`, `subject`, `news`) VALUES ('$campaign', '$_POST[title]', '$_POST[subject]', '$_POST[news]')";
+									//echo $log;
+									if(mysqli_query($con,$log))
+									{
+										echo '<script>alert("New Campaign Added") </script>' ;
+
+									}								
 								}								
-							}								
-							?>                          
-                        </p>
-						
-                    </div>
-                </div>
-            </div>
+								?>                          
+							</p>
+						</div>
+                	</div>
+            	</div>
                <?php				
 				$sql = "SELECT * FROM `contact`";
 				$re = mysqli_query($con,$sql);				
 			   ?>
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-											<th>Numero celular</th>
-                                            <th>Email</th>
-                                            <th>Fecha</th>
-											<th>Estado</th>
-											<th>Aprobación</th>
-											<th>Eliminar</th>                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-									<?php
-										while($row = mysqli_fetch_array($re))
-										{
-										
-											$id = $row['id'];
-											
-											if($id % 2 ==1 )
+				<div class="row"><h1 style="text-align: center">Suscriptores</h1><hr>
+					<div class="col-md-12">
+						<!-- Advanced Tables -->
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>Numero celular</th>
+												<th>Email</th>
+												<th>Fecha</th>
+												<th>Estado</th>
+												<th>Aprobación</th>
+												<th>Eliminar</th>                
+											</tr>
+										</thead>
+										<tbody>
+										<?php
+											while($row = mysqli_fetch_array($re))
 											{
-												echo"<tr class='gradeC'>
-													<td>".$row['fullname']."</td>
-													<td>".$row['phone']."</td>
-													<td>".$row['email']."</td>
-													<td>".$row['cdate']."</td>
-													<td>".$row['approval']."</td>
-													<td><a href=newsletter.php?eid=".$id ." <button class='btn btn-primary'> <i class='fa fa-edit' ></i> Permission</button></td>
-													<td><a href=newsletterdel.php?eid=".$id ." <button class='btn btn-danger'> <i class='fa fa-edit' ></i> Delete</button></td>
-												</tr>";
-											}
-											else
-											{
-												echo"<tr class='gradeU'>
-													<td>".$row['fullname']."</td>
-													<td>".$row['phone']."</td>
-													<td>".$row['email']."</td>
-													<td>".$row['cdate']."</td>
-													<td>".$row['approval']."</td>
-													<td><a href=newsletter.php?eid=".$id." <button class='btn btn-primary'> <i class='fa fa-edit' ></i> Permission</button></td>
-													<td><a href=newsletterdel.php?eid=".$id ." <button class='btn btn-danger'> <i class='fa fa-edit' ></i> Delete </button></td>		
-												</tr>";
-											
+												$id = $row['id'];
+
+												if($id % 2 ==1 )
+												{
+													echo"<tr class='gradeC'>
+														<td>".$row['fullname']."</td>
+														<td>".$row['phone']."</td>
+														<td>".$row['email']."</td>
+														<td>".$row['cdate']."</td>
+														<td>".$row['approval']."</td>
+														<td><a href=newsletter.php?eid=".$id ." <button class='btn btn-primary'> <i class='fa fa-edit' ></i> Permission</button></td>
+														<td><a href=newsletterdel.php?eid=".$id ." <button class='btn btn-danger'> <i class='fa fa-edit' ></i> Delete</button></td>
+													</tr>";
+												}
+												else
+												{
+													echo"<tr class='gradeU'>
+														<td>".$row['fullname']."</td>
+														<td>".$row['phone']."</td>
+														<td>".$row['email']."</td>
+														<td>".$row['cdate']."</td>
+														<td>".$row['approval']."</td>
+														<td><a href=newsletter.php?eid=".$id." <button class='btn btn-primary'> <i class='fa fa-edit' ></i> Permission</button></td>
+														<td><a href=newsletterdel.php?eid=".$id ." <button class='btn btn-danger'> <i class='fa fa-edit' ></i> Delete </button></td>		
+													</tr>";
+
+												}									
 											}									
-										}									
-									?>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <!--End Advanced Tables -->
-                </div>
-            </div>
-                <!-- /. ROW  -->            
-                </div>
-               
-            </div>                   
+										?>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!--End Advanced Tables -->
+					</div>
+				</div>
+				<?php				
+				$sql = "SELECT * FROM `newsletterlog`";
+				$re = mysqli_query($con,$sql);
+			   ?>
+				<div class="row"><h1 style="text-align: center">Campañas</h1><hr>
+					<div class="col-md-12">
+						<!-- Advanced Tables -->
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+										<thead>
+											<tr>
+												<th>Titulo</th>
+												<th>Asunto</th>
+												<th>Noticia</th>
+												<th>Enviar</th>
+												<th>Eliminar</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php
+											while($row = mysqli_fetch_array($re))
+											{
+												$id = $row['id'];
+												$id2 = $row['mailchimp'];
+												if($id % 2 ==1 )
+												{
+													echo"<tr class='gradeC'>
+														<td>".$row['title']."</td>
+														<td>".$row['subject']."</td>
+														<td>".$row['news']."</td>
+														<td><a href=campaign.php?eid=".$id2 ." <button class='btn btn-success'> <i class='fa fa-edit' ></i> Send</button></td>
+														<td><a href=campaigndel.php?eid=".$id2 ." <button class='btn btn-danger'> <i class='fa fa-edit' ></i> Delete</button></td>
+													</tr>";
+												}
+												else
+												{
+													echo"<tr class='gradeU'>
+														<td>".$row['title']."</td>
+														<td>".$row['subject']."</td>
+														<td>".$row['news']."</td>
+														<td><a href=campaign.php?eid=".$id2 ." <button class='btn btn-success'> <i class='fa fa-edit' ></i> Send</button></td>
+														<td><a href=campaigndel.php?eid=".$id2 ." <button class='btn btn-danger'> <i class='fa fa-edit' ></i> Delete </button></td>		
+													</tr>";
+
+												}									
+											}									
+										?>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!--End Advanced Tables -->
+					</div>
+				</div>
+                <!-- /. ROW  -->
+	   		</div>         
+		</div>                   
     </div>
-             <!-- /. PAGE INNER  -->
-            </div>
-         <!-- /. PAGE WRAPPER  -->
-     <!-- /. WRAPPER  -->
+	<!-- /. PAGE INNER  -->
+ 	<!-- /. PAGE WRAPPER  -->
+    <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!-- jQuery Js -->
     <script src="assets/js/jquery-1.10.2.js"></script>
